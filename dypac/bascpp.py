@@ -14,6 +14,7 @@ import numpy as np
 from sklearn.cluster import k_means
 from sklearn.preprocessing import scale
 
+import gc
 
 def _select_subsample(y, subsample_size, start=None):
     """Select a random subsample in a data array."""
@@ -131,6 +132,9 @@ def replicate_clusters(
             n_init=n_init,
             random_state=random_state,
         )
+
+    del samp
+    gc.collect()
     return _part2onehot(part, n_clusters)
 
 

@@ -21,7 +21,7 @@ from nilearn.decomposition.base import BaseDecomposition
 
 import bascpp as bpp
 
-
+import gc
 class dypac(BaseDecomposition):
     """
     Perform Stable Dynamic Cluster Analysis.
@@ -337,7 +337,9 @@ class dypac(BaseDecomposition):
                 onehot_all = onehot
             else:
                 onehot_all = vstack([onehot_all, onehot])
-
+        
+        del this_data
+        gc.collect()
         # find the states
         states = bpp.find_states(
             onehot_all,
