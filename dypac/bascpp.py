@@ -80,6 +80,7 @@ def replicate_clusters(
     subsample_size,
     n_clusters,
     n_replications,
+    min_size=0,
     max_iter=100,
     n_init=10,
     random_state=None,
@@ -158,7 +159,10 @@ def replicate_clusters(
             n_init=n_init,
             random_state=random_state,
         )
-    return _part2onehot(part, n_clusters)
+    onehot = _part2onehot(part, n_clusters)
+    size_onehot = np.sum(onehot, axis=1)
+    mask_keep = np.reshape(np.array(size_onehot) > min_size, [onehot.shape[0], ])
+    return onehot[mask_keep, :]
 
 
 def find_states(

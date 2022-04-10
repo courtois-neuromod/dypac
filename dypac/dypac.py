@@ -71,6 +71,9 @@ class Dypac(BaseDecomposition):
         reduce dramatically the compute time, but will change slightly
         the results.
 
+    min_size: int, optional
+        Minimum number of voxels in a cluster.
+
     n_init: int, optional
         Number of initializations for k-means
 
@@ -176,6 +179,7 @@ class Dypac(BaseDecomposition):
         n_replications=40,
         n_batch=1,
         n_init=30,
+        min_size=20,
         n_init_aggregation=100,
         subsample_size=30,
         max_iter=30,
@@ -222,6 +226,7 @@ class Dypac(BaseDecomposition):
         self.n_clusters = n_clusters
         self.n_states = n_states
         self.n_batch = n_batch
+        self.min_size = min_size
         self.n_replications = n_replications
         self.n_init = n_init
         self.n_init_aggregation = n_init_aggregation
@@ -379,6 +384,7 @@ class Dypac(BaseDecomposition):
                 subsample_size=self.subsample_size,
                 n_clusters=self.n_clusters,
                 n_replications=self.n_replications,
+                min_size=self.min_size,
                 max_iter=self.max_iter,
                 n_init=self.n_init,
                 random_state=self.random_state,
@@ -403,7 +409,7 @@ class Dypac(BaseDecomposition):
 
         # Generate the stability maps
         stab_maps, dwell_time = bpp.stab_maps(
-            onehot_all, states, self.n_replications, self.n_states
+            onehot_all, states, self.n_replications * len(imgs), self.n_states
         )
 
         return stab_maps, dwell_time
