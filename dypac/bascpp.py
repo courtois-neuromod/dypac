@@ -80,8 +80,12 @@ def _sieve_onehot(onehot, min_size, n_clusters):
     size_onehot = np.sum(onehot, axis=1)
     if (min_size > 0) & (min_size < 1):
         min_size = np.ceil(min_size * onehot.shape[1] / n_clusters)
-    if min_size != 0:
-        mask_keep = np.reshape(np.array(size_onehot) > min_size, [onehot.shape[0], ])
+    mask_keep = np.reshape(
+        np.array(size_onehot) > min_size,
+        [
+            onehot.shape[0],
+        ],
+    )
     if any(mask_keep == 0):
         message = f"Removed {np.count_nonzero(mask_keep == 0)} clusters smaller than the specified threshold min_size={min_size} samples"
         warnings.warn(message)

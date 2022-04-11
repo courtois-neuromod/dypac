@@ -24,6 +24,7 @@ def test_fit():
     model = Dypac(
         n_clusters=n_clusters,
         n_states=3,
+        min_size=0,
         n_replications=n_replications,
         mask=mask,
         grey_matter=None,
