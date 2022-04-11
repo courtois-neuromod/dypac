@@ -71,8 +71,10 @@ class Dypac(BaseDecomposition):
         reduce dramatically the compute time, but will change slightly
         the results.
 
-    min_size: int, optional
-        Minimum number of voxels in a cluster.
+    min_size: int or 0 < float < 1
+        Minimun size of a cluster.
+        If min_size is a float between 0 and 1, it indicates a proportion of the
+        cluster size for uniform clusters, #samples / n_clusters.
 
     n_init: int, optional
         Number of initializations for k-means
@@ -179,7 +181,7 @@ class Dypac(BaseDecomposition):
         n_replications=40,
         n_batch=1,
         n_init=30,
-        min_size=20,
+        min_size=0.5,
         n_init_aggregation=100,
         subsample_size=30,
         max_iter=30,

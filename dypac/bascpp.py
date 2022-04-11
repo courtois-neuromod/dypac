@@ -75,6 +75,19 @@ def _trim_states(onehot, states, n_states, verbose, threshold_sim):
     return states
 
 
+def _sieve_onehot(onehot, min_size, n_clusters):
+    """Remove small clusters from a onehot encoding cluster matrix."""
+    size_onehot = np.sum(onehot, axis=1)
+    if (min_size > 0) & (min_size < 1):
+        min_size = np.ceil(min_size * onehot.shape[1] / n_clusters)
+    if min_size != 0:
+        mask_keep = np.reshape(np.array(size_onehot) > min_size, [onehot.shape[0], ])
+    if any(mask_keep == 0):
+        message = f"Removed {np.count_nonzero(mask_keep == 0)} clusters smaller than the specified threshold min_size={min_size} samples"
+        warnings.warn(message)
+    return onehot[mask_keep, :]
+
+
 def replicate_clusters(
     y,
     subsample_size,
@@ -106,11 +119,16 @@ def replicate_clusters(
     n_replications: int
         The number of replications
 
-    n_init: int, optional
-            Number of initializations for k-means
+    min_size: int or 0 < float < 1
+        Minimun size of a cluster.
+        If min_size is a float between 0 and 1, it indicates a proportion of the
+        cluster size for uniform clusters, #samples / n_clusters.
 
     max_iter: int, optional
         Max number of iterations for the k-means algorithm
+
+    n_init: int, optional
+            Number of initializations for k-means
 
     verbose: boolean, optional
         Turn on/off verbose
@@ -160,9 +178,7 @@ def replicate_clusters(
             random_state=random_state,
         )
     onehot = _part2onehot(part, n_clusters)
-    size_onehot = np.sum(onehot, axis=1)
-    mask_keep = np.reshape(np.array(size_onehot) > min_size, [onehot.shape[0], ])
-    return onehot[mask_keep, :]
+    return _sieve_onehot(onehot, min_size, n_clusters)
 
 
 def find_states(
