@@ -15,8 +15,12 @@ from nilearn import EXPAND_PATH_WILDCARDS
 from joblib import Memory
 from nilearn import datasets, image
 from nilearn._utils.niimg_conversions import _resolve_globbing
-from nilearn.maskers import NiftiMasker
-from nilearn.maskers._masker_validation import _check_embedded_nifti_masker
+try:
+    from nilearn.maskers._masker_validation import _check_embedded_nifti_masker
+except ImportError:
+    from nilearn.input_data.masker_validation import (
+        check_embedded_nifti_masker as _check_embedded_nifti_masker,
+    )
 from nilearn.decomposition.base import BaseDecomposition
 
 import dypac.bascpp as bpp

@@ -1,8 +1,17 @@
 from dypac.embeddings import Embedding
 from sklearn.preprocessing import OneHotEncoder
 from nilearn.image import resample_to_img
-from nilearn.maskers import NiftiMasker
-from nilearn.maskers._masker_validation import _check_embedded_nifti_masker
+try:
+    from nilearn.maskers import NiftiMasker
+except ImportError:
+    from nilearn.input_data import NiftiMasker
+try:
+    from nilearn.maskers._masker_validation import _check_embedded_nifti_masker
+except ImportError:
+    from nilearn.input_data.masker_validation import (
+        check_embedded_nifti_masker as _check_embedded_nifti_masker,
+    )
+
 
 class BaseMasker:
 

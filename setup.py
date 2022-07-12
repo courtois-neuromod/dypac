@@ -9,7 +9,7 @@ with open(path.join(here, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="dypac",
-    version="0.7",
+    version="0.7.1",
     description="Dynamic parcel aggregation with clustering",
     long_description=long_description,
     long_description_content_type="text/markdown",  # Optional (see note above)
