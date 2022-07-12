@@ -7,7 +7,6 @@ import itertools
 import warnings
 
 from scipy.sparse import vstack
-import numpy as np
 
 from sklearn.utils import check_random_state
 
